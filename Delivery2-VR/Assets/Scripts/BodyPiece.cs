@@ -10,6 +10,9 @@ public class BodyPiece : MonoBehaviour
     private Collider col;
     private Transform originalParent;
 
+    private Vector3 lastPosition;
+    private Vector3 handVelocity;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -32,6 +35,20 @@ public class BodyPiece : MonoBehaviour
 
         // move the piece so its center is exactly on the hold point
         transform.position += holdPoint.position - col.bounds.center;
+
+        lastPosition = transform.position;
+        handVelocity = Vector3.zero;
+    }
+    void Update()
+    {
+        if (!IsHeld) return;
+
+        Vector3 currentVelocity = (transform.position - lastPosition) / Time.deltaTime;
+
+        // mix with the previous value so it is not so jumpy
+        handVelocity = Vector3.Lerp(handVelocity, currentVelocity, 0.5f);
+
+        lastPosition = transform.position;
     }
 
     // called when the controller lets go of the piece
@@ -42,5 +59,8 @@ public class BodyPiece : MonoBehaviour
         // go back to the old parent and let physics take over (it falls)
         transform.SetParent(originalParent, true);
         rb.isKinematic = false;
+
+        // throw it with the speed the hand had
+        rb.linearVelocity = handVelocity;
     }
 }
