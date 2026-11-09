@@ -1,4 +1,5 @@
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class PotatoHead : MonoBehaviour
 {
@@ -70,5 +71,24 @@ public class PotatoHead : MonoBehaviour
 
         piece.AttachTo(transform, targetCenter, rot);
         return true;
+    }
+
+    public void ResetPotato()
+    {
+        BodyPiece[] pieces = FindObjectsByType<BodyPiece>(FindObjectsSortMode.None);
+        foreach (BodyPiece p in pieces)
+        {
+            if (p.IsHeld) continue;
+            if (!p.IsAttached) continue;
+            p.ResetToStart();
+        }
+    }
+
+    void Update()
+    {
+        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch) || (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame))
+        {
+            ResetPotato();
+        }
     }
 }

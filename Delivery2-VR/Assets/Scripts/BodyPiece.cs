@@ -16,11 +16,17 @@ public class BodyPiece : MonoBehaviour
     private Vector3 lastPosition;
     private Vector3 handVelocity;
 
+    private Vector3 startLocalPosition;
+    private Quaternion startLocalRotation;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
         originalParent = transform.parent;
+
+        startLocalPosition = transform.localPosition;
+        startLocalRotation = transform.localRotation;
     }
 
     // called when a controller grabs the piece
@@ -85,5 +91,19 @@ public class BodyPiece : MonoBehaviour
         transform.SetParent(parent, true);
 
         IsAttached = true;
+    }
+
+    public void ResetToStart()
+    {
+        IsHeld = false;
+        IsAttached = false;
+
+        transform.SetParent(originalParent, false);
+        transform.localPosition = startLocalPosition;
+        transform.localRotation = startLocalRotation;
+
+        rb.isKinematic = false;
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
     }
 }
