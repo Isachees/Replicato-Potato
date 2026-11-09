@@ -5,6 +5,9 @@ using UnityEngine;
 public class BodyPiece : MonoBehaviour
 {
     public bool IsHeld { get; private set; }
+    public bool IsAttached { get; private set; }
+
+    public Vector3 Center { get { return col.bounds.center; } }
 
     private Rigidbody rb;
     private Collider col;
@@ -24,6 +27,7 @@ public class BodyPiece : MonoBehaviour
     public void Grab(Transform holdPoint)
     {
         IsHeld = true;
+        IsAttached = false;
 
         // stop all movement and turn off physics while it is in the hand
         rb.linearVelocity = Vector3.zero;
@@ -62,5 +66,24 @@ public class BodyPiece : MonoBehaviour
 
         // throw it with the speed the hand had
         rb.linearVelocity = handVelocity;
+
+        if (PotatoHead.Instance != null)
+        {
+            PotatoHead.Instance.TrySnap(this);
+        }
+    }
+
+    public void AttachTo(Transform parent, Vector3 targetCenter, Quaternion rotation)
+    {
+        transform.rotation = rotation;
+
+        transform.position += targetCenter - col.bounds.center;
+
+        rb.linearVelocity = Vector3.zero;
+        rb.angularVelocity = Vector3.zero;
+        rb.isKinematic = true;
+        transform.SetParent(parent, true);
+
+        IsAttached = true;
     }
 }
