@@ -17,6 +17,8 @@ public class ControllerGrabber : MonoBehaviour
     private Transform holdPoint;
     private LineRenderer line;
     private BodyPiece heldPiece;
+    // true while a piece is in the hand (used by the teleport pointer)
+    public bool IsHolding { get { return heldPiece != null; } }
 
     void Start()
     {
