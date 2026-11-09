@@ -53,18 +53,27 @@ public class ControllerGrabber : MonoBehaviour
         Vector3 origin = transform.position;
         Vector3 end = origin + transform.forward * maxDistance;
         BodyPiece target = null;
+        ResetButton button = null;
 
         if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             end = hit.point;
             target = hit.collider.GetComponentInParent<BodyPiece>();
+            button = hit.collider.GetComponentInParent<ResetButton>();
         }
 
-        DrawLine(origin, end, target != null ? hoverColor : lineColor);
+        DrawLine(origin, end, (target != null || button != null) ? hoverColor : lineColor);
 
-        // trigger pressed while pointing at a free piece
-        if (target != null && !target.IsHeld &&
-            OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller))
+        bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller);
+
+        //button
+        if (button != null && triggerDown)
+        {
+            button.Press();
+            return;
+        }
+
+        if (target != null && !target.IsHeld && triggerDown)
         {
             heldPiece = target;
             heldPiece.Grab(holdPoint);

@@ -86,7 +86,7 @@ public class PotatoHead : MonoBehaviour
 
     void Update()
     {
-        if (OVRInput.GetDown(OVRInput.Button.One, OVRInput.Controller.RTouch) || (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame))
+        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
         {
             ResetPotato();
         }
