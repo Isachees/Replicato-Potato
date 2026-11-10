@@ -17,17 +17,14 @@ public class ControllerGrabber : MonoBehaviour
     private Transform holdPoint;
     private LineRenderer line;
     private BodyPiece heldPiece;
-    // true while a piece is in the hand (used by the teleport pointer)
     public bool IsHolding { get { return heldPiece != null; } }
 
     void Start()
     {
-        // empty object in front of the controller where the piece will be held
         holdPoint = new GameObject("HoldPoint_" + controller).transform;
         holdPoint.SetParent(transform, false);
         holdPoint.localPosition = new Vector3(0f, 0f, holdDistance);
 
-        // simple line to see where we are pointing
         line = gameObject.AddComponent<LineRenderer>();
         line.material = new Material(Shader.Find("Sprites/Default"));
         line.positionCount = 2;
@@ -47,26 +44,34 @@ public class ControllerGrabber : MonoBehaviour
         }
     }
 
-    // no piece in hand: point with the ray and wait for the trigger
     void HandleAiming()
     {
         Vector3 origin = transform.position;
         Vector3 end = origin + transform.forward * maxDistance;
         BodyPiece target = null;
         ResetButton button = null;
+        CheckButton checkButton = null;
 
         if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
             end = hit.point;
             target = hit.collider.GetComponentInParent<BodyPiece>();
             button = hit.collider.GetComponentInParent<ResetButton>();
+            checkButton = hit.collider.GetComponentInParent<CheckButton>();
+            //Debug.Log("Rayo toca: " + hit.collider.name + " | CheckButton: " + (checkButton != null) + " | ResetButton: " + (button != null));
         }
 
-        DrawLine(origin, end, (target != null || button != null) ? hoverColor : lineColor);
+        DrawLine(origin, end, (target != null || button != null || checkButton != null) ? hoverColor : lineColor);
 
         bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller);
+        //if (triggerDown) Debug.Log("Gatillo " + controller + " | checkButton: " + (checkButton != null));
 
-        //button
+        if (checkButton != null && triggerDown)
+        {
+            checkButton.Press();
+            return;
+        }
+
         if (button != null && triggerDown)
         {
             button.Press();
@@ -81,7 +86,6 @@ public class ControllerGrabber : MonoBehaviour
         }
     }
 
-    // piece in hand: it follows the controller until the trigger is released
     void HandleHolding()
     {
         if (!OVRInput.Get(OVRInput.Button.PrimaryIndexTrigger, controller))
