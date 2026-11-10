@@ -4,15 +4,7 @@ using UnityEngine;
 using UnityEngine.InputSystem;
 #endif
 
-// Muestra en una pantalla de la escena una patata de ejemplo ya montada.
-//
-// Cómo funciona:
-//  - Monta una copia SOLO VISUAL de la patata y sus piezas (malla + material, sin
-//    BodyPiece, Rigidbody ni colliders) en un "estudio" debajo del suelo de la sala,
-//    para que el jugador no la vea ni pueda cogerla y para que
-//    PotatoHead.ResetPotato() no la toque.
-//  - Una cámara en el estudio la graba a una RenderTexture que se ve en la pantalla.
-//  - Randomize() cambia ojos, nariz, boca y orejas al azar.
+
 public class ExamplePotatoDisplay : MonoBehaviour
 {
     public static ExamplePotatoDisplay Instance { get; private set; }
@@ -386,4 +378,33 @@ public class ExamplePotatoDisplay : MonoBehaviour
         if (arr == null || index < 0 || index >= arr.Length) return null;
         return arr[index];
     }
+    public struct PotatoParts
+    {
+        public string eye, nose, mouth, ear;
+        public bool twoEars;
+
+        public override string ToString() =>
+            $"Ojos: {eye ?? "-"}, Nariz: {nose ?? "-"}, Boca: {mouth ?? "-"}, Orejas: {ear ?? "-"}{(ear != null && twoEars ? " (x2)" : "")}";
+    }
+
+    // Devuelve los nombres de los prefabs colocados 
+    public PotatoParts GetCurrentParts()
+    {
+        return new PotatoParts
+        {
+            eye = NameOf(eyePrefabs, CurrentEye),
+            nose = NameOf(nosePrefabs, CurrentNose),
+            mouth = NameOf(mouthPrefabs, CurrentMouth),
+            ear = NameOf(earPrefabs, CurrentEar),
+            twoEars = twoEars
+        };
+    }
+
+    static string NameOf(GameObject[] arr, int index)
+    {
+        GameObject p = Get(arr, index);
+        return p != null ? p.name : null;
+    }
 }
+
+
