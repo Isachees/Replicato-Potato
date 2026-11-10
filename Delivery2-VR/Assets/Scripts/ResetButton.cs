@@ -2,10 +2,12 @@ using UnityEngine;
 
 public class ResetButton : MonoBehaviour
 {
-    public float cooldown = 0.25f;
+    public float cooldown = 0.5f;
 
     private Animator animator;
     private float nextPressTime;
+
+    public int type = 0;
 
     void Awake()
     {
@@ -22,9 +24,13 @@ public class ResetButton : MonoBehaviour
             animator.SetTrigger("Press");
         }
 
-        if (PotatoHead.Instance != null)
+        if (type == 0)
         {
-            PotatoHead.Instance.ResetPotato();
+            if (PotatoHead.Instance != null) PotatoHead.Instance.ResetPotato();
+        }
+        else
+        {
+            if (ExamplePotatoDisplay.Instance != null) ExamplePotatoDisplay.Instance.Randomize();
         }
     }
 }
