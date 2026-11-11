@@ -83,12 +83,4 @@ public class PotatoHead : MonoBehaviour
             p.ResetToStart();
         }
     }
-
-    void Update()
-    {
-        if (Keyboard.current != null && Keyboard.current.rKey.wasPressedThisFrame)
-        {
-            ResetPotato();
-        }
-    }
 }

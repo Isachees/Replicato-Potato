@@ -4,6 +4,8 @@ using UnityEngine;
 [RequireComponent(typeof(Rigidbody))]
 public class BodyPiece : MonoBehaviour
 {
+    public float grabSpeed = 50f;
+
     public bool IsHeld { get; private set; }
     public bool IsAttached { get; private set; }
 
@@ -13,7 +15,10 @@ public class BodyPiece : MonoBehaviour
     private Collider col;
     private Transform originalParent;
 
-    private Vector3 lastPosition;
+    private Transform hold;
+    private Vector3 targetLocalPosition;
+
+    private Vector3 lastHoldPosition;
     private Vector3 handVelocity;
 
     private Vector3 startLocalPosition;
@@ -40,25 +45,34 @@ public class BodyPiece : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
 
-        // make the piece follow the hand
+        // where the piece must end up: its center exactly on the hold point
+        Vector3 targetWorldPosition = transform.position + (holdPoint.position - col.bounds.center);
+
+        // follow the hand, but stay where we are (Update moves us to the target)
         transform.SetParent(holdPoint, true);
+        hold = holdPoint;
+        targetLocalPosition = holdPoint.InverseTransformPoint(targetWorldPosition);
 
-        // move the piece so its center is exactly on the hold point
-        transform.position += holdPoint.position - col.bounds.center;
-
-        lastPosition = transform.position;
+        lastHoldPosition = holdPoint.position;
         handVelocity = Vector3.zero;
     }
+
     void Update()
     {
         if (!IsHeld) return;
 
-        Vector3 currentVelocity = (transform.position - lastPosition) / Time.deltaTime;
+        // fly towards the hand (does nothing once it has arrived)
+        transform.localPosition = Vector3.MoveTowards(
+            transform.localPosition, targetLocalPosition, grabSpeed * Time.deltaTime);
+
+        // measure the speed of the hand, not of the piece,
+        // so the flight does not count as a throw
+        Vector3 currentVelocity = (hold.position - lastHoldPosition) / Time.deltaTime;
 
         // mix with the previous value so it is not so jumpy
         handVelocity = Vector3.Lerp(handVelocity, currentVelocity, 0.5f);
 
-        lastPosition = transform.position;
+        lastHoldPosition = hold.position;
     }
 
     // called when the controller lets go of the piece
