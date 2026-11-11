@@ -24,11 +24,14 @@ public class BodyPiece : MonoBehaviour
     private Vector3 startLocalPosition;
     private Quaternion startLocalRotation;
 
+    private float noSnapUntil;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         col = GetComponent<Collider>();
         originalParent = transform.parent;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
 
         startLocalPosition = transform.localPosition;
         startLocalRotation = transform.localRotation;
@@ -92,6 +95,20 @@ public class BodyPiece : MonoBehaviour
         }
     }
 
+    void OnCollisionEnter(Collision collision)
+    {
+        if (Time.time < noSnapUntil) return;
+        if (IsHeld || IsAttached) return;
+        if (PotatoHead.Instance == null) return;
+
+        // only the potato itself, not other pieces that are already attached to it
+        Collider other = collision.collider;
+        if (other.GetComponentInParent<PotatoHead>() == null) return;
+        if (other.GetComponentInParent<BodyPiece>() != null) return;
+
+        PotatoHead.Instance.TrySnap(this);
+    }
+
     public void AttachTo(Transform parent, Vector3 targetCenter, Quaternion rotation)
     {
         transform.rotation = rotation;
@@ -111,6 +128,7 @@ public class BodyPiece : MonoBehaviour
     {
         IsHeld = false;
         IsAttached = false;
+        noSnapUntil = Time.time + 0.5f;
 
         transform.SetParent(originalParent, true);
         rb.isKinematic = false;
