@@ -11,6 +11,14 @@ public class PotatoHead : MonoBehaviour
     public float surfaceOffset = 0f;
     public bool alignToSurface = false;
 
+    [Header("reset settings")]
+    public bool launchOnReset = true;
+    public float resetLaunchForce = 15f;
+    public float resetLaunchTorque = 5f;
+    [Range(0f, 1f)] public float resetLaunchUpward = 0.05f;
+    [Range(0f, 0.5f)] public float resetLaunchSpread = 0.1f;
+    public bool resetLaunchAtPlayer = false;
+
     private Collider[] potatoColliders;
 
     void Awake()
@@ -75,12 +83,36 @@ public class PotatoHead : MonoBehaviour
 
     public void ResetPotato()
     {
-        BodyPiece[] pieces = FindObjectsByType<BodyPiece>(FindObjectsSortMode.None);
+        BodyPiece[] pieces = FindObjectsByType<BodyPiece>();
         foreach (BodyPiece p in pieces)
         {
             if (p.IsHeld) continue;
             if (!p.IsAttached) continue;
-            p.ResetToStart();
+
+            if (launchOnReset)
+            {
+                Vector3 dir;
+                Camera cam = Camera.main;
+
+                if (resetLaunchAtPlayer && cam != null)
+                {
+                    dir = cam.transform.position - p.Center;
+                }
+                else
+                {
+                    dir = p.Center - transform.position;
+                    dir.y = 0f;
+                }
+
+                if (dir.sqrMagnitude < 0.0001f) dir = transform.forward;
+
+                dir = dir.normalized + Vector3.up * resetLaunchUpward + Random.insideUnitSphere * resetLaunchSpread;
+                p.Eject(dir.normalized * resetLaunchForce, Random.insideUnitSphere * resetLaunchTorque);
+            }
+            else
+            {
+                p.ResetToStart();
+            }
         }
     }
 }

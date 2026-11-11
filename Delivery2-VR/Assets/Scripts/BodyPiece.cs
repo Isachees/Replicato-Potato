@@ -34,21 +34,21 @@ public class BodyPiece : MonoBehaviour
         startLocalRotation = transform.localRotation;
     }
 
-    // called when a controller grabs the piece
+    
     public void Grab(Transform holdPoint)
     {
         IsHeld = true;
         IsAttached = false;
 
-        // stop all movement and turn off physics while it is in the hand
+        
         rb.linearVelocity = Vector3.zero;
         rb.angularVelocity = Vector3.zero;
         rb.isKinematic = true;
 
-        // where the piece must end up: its center exactly on the hold point
+        
         Vector3 targetWorldPosition = transform.position + (holdPoint.position - col.bounds.center);
 
-        // follow the hand, but stay where we are (Update moves us to the target)
+        
         transform.SetParent(holdPoint, true);
         hold = holdPoint;
         targetLocalPosition = holdPoint.InverseTransformPoint(targetWorldPosition);
@@ -61,30 +61,29 @@ public class BodyPiece : MonoBehaviour
     {
         if (!IsHeld) return;
 
-        // fly towards the hand (does nothing once it has arrived)
+       
         transform.localPosition = Vector3.MoveTowards(
             transform.localPosition, targetLocalPosition, grabSpeed * Time.deltaTime);
 
-        // measure the speed of the hand, not of the piece,
-        // so the flight does not count as a throw
+        
         Vector3 currentVelocity = (hold.position - lastHoldPosition) / Time.deltaTime;
 
-        // mix with the previous value so it is not so jumpy
+        
         handVelocity = Vector3.Lerp(handVelocity, currentVelocity, 0.5f);
 
         lastHoldPosition = hold.position;
     }
 
-    // called when the controller lets go of the piece
+  
     public void Release()
     {
         IsHeld = false;
 
-        // go back to the old parent and let physics take over (it falls)
+        
         transform.SetParent(originalParent, true);
         rb.isKinematic = false;
 
-        // throw it with the speed the hand had
+        
         rb.linearVelocity = handVelocity;
 
         if (PotatoHead.Instance != null)
@@ -105,6 +104,19 @@ public class BodyPiece : MonoBehaviour
         transform.SetParent(parent, true);
 
         IsAttached = true;
+    }
+
+    
+    public void Eject(Vector3 velocity, Vector3 angularVelocity)
+    {
+        IsHeld = false;
+        IsAttached = false;
+
+        transform.SetParent(originalParent, true);
+        rb.isKinematic = false;
+        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic; 
+        rb.linearVelocity = velocity;
+        rb.angularVelocity = angularVelocity;
     }
 
     public void ResetToStart()
