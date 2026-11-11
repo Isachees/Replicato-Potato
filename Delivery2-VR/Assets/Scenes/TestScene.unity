@@ -1369,6 +1369,9 @@ PrefabInstance:
       addedObject: {fileID: 1245002979}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 1245002981}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 1245002978}
   m_SourcePrefab: {fileID: 100100000, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
 --- !u!1 &469484118
@@ -2351,6 +2354,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5044681, y: 0.3133973, z: 0.5244074}
   m_Center: {x: 0.01659578, y: 0.12931591, z: -0.00000011920929}
+--- !u!114 &769068989
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 769068985}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309662abe82299843972aeec1708d585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonLabel
+  text: RESETEAR PANTALLA
+  color: {r: 1, g: 1, b: 1, a: 1}
+  heightOffset: 0.12
+  characterSize: 0.012
+  fontSize: 100
+  keepUpright: 1
 --- !u!1 &776356906 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: b06e3bf1588630e41b84751ca582914c, type: 3}
@@ -9161,6 +9182,24 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.5044681, y: 0.3133973, z: 0.5244074}
   m_Center: {x: 0.01659578, y: 0.12931591, z: -0.00000011920929}
+--- !u!114 &1245002981
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1245002977}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309662abe82299843972aeec1708d585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonLabel
+  text: VERIFICAR
+  color: {r: 1, g: 1, b: 1, a: 1}
+  heightOffset: 0.12
+  characterSize: 0.012
+  fontSize: 100
+  keepUpright: 1
 --- !u!4 &1266442524 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 1981123356549539154, guid: 22017eb078028874a989a918c980e126, type: 3}
@@ -9735,6 +9774,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2061273634}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 2061273638}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2061273637}
@@ -11413,6 +11455,9 @@ PrefabInstance:
       addedObject: {fileID: 769068988}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
       insertIndex: -1
+      addedObject: {fileID: 769068989}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
+      insertIndex: -1
       addedObject: {fileID: 769068987}
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: c9efa2ef04cdefc4ca9c29315d11456b, type: 3}
       insertIndex: -1
@@ -11495,6 +11540,24 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
+--- !u!114 &2061273638
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2061273633}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 309662abe82299843972aeec1708d585, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ButtonLabel
+  text: RESETEAR PATATA
+  color: {r: 1, g: 1, b: 1, a: 1}
+  heightOffset: 0.12
+  characterSize: 0.012
+  fontSize: 100
+  keepUpright: 1
 --- !u!1 &2105101970
 GameObject:
   m_ObjectHideFlags: 0
