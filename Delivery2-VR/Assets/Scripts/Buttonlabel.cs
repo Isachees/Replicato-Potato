@@ -13,6 +13,9 @@ public class ButtonLabel : MonoBehaviour
     private Collider col;
     private Camera cam;
 
+    private MeshRenderer tmRenderer;
+    private int lastHoverFrame = -10;
+
     [RuntimeInitializeOnLoadMethod(RuntimeInitializeLoadType.AfterSceneLoad)]
     static void AutoSetup()
     {
@@ -53,6 +56,10 @@ public class ButtonLabel : MonoBehaviour
         Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
         tm.font = font;
         go.GetComponent<MeshRenderer>().material = font.material;
+
+        tmRenderer = go.GetComponent<MeshRenderer>();
+        tmRenderer.material = font.material;
+        tmRenderer.enabled = false;
     }
 
     void LateUpdate()
@@ -78,5 +85,11 @@ public class ButtonLabel : MonoBehaviour
         if (keepUpright) dir.y = 0f;
         if (dir.sqrMagnitude > 0.0001f)
             tm.transform.rotation = Quaternion.LookRotation(dir, Vector3.up);
+
+        tmRenderer.enabled = Time.frameCount - lastHoverFrame <= 1;
+    }
+    public void Hover()
+    {
+        lastHoverFrame = Time.frameCount;
     }
 }

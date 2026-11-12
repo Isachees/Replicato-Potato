@@ -51,6 +51,7 @@ public class ControllerGrabber : MonoBehaviour
         BodyPiece target = null;
         ResetButton button = null;
         CheckButton checkButton = null;
+        ButtonLabel label = null;
 
         if (Physics.Raycast(origin, transform.forward, out RaycastHit hit, maxDistance, ~0, QueryTriggerInteraction.Ignore))
         {
@@ -58,10 +59,12 @@ public class ControllerGrabber : MonoBehaviour
             target = hit.collider.GetComponentInParent<BodyPiece>();
             button = hit.collider.GetComponentInParent<ResetButton>();
             checkButton = hit.collider.GetComponentInParent<CheckButton>();
+            label = hit.collider.GetComponentInParent<ButtonLabel>();
             //Debug.Log("Rayo toca: " + hit.collider.name + " | CheckButton: " + (checkButton != null) + " | ResetButton: " + (button != null));
         }
 
         DrawLine(origin, end, (target != null || button != null || checkButton != null) ? hoverColor : lineColor);
+        if (label != null) label.Hover();
 
         bool triggerDown = OVRInput.GetDown(OVRInput.Button.PrimaryIndexTrigger, controller);
         //if (triggerDown) Debug.Log("Gatillo " + controller + " | checkButton: " + (checkButton != null));
