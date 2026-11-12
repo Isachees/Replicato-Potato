@@ -7,6 +7,7 @@ public class ButtonLabel : MonoBehaviour
     public float heightOffset = 0.12f;   
     public float characterSize = 0.012f; 
     public int fontSize = 100;
+    public Font customFont;
     public bool keepUpright = true;      
 
     private TextMesh tm;
@@ -35,6 +36,7 @@ public class ButtonLabel : MonoBehaviour
         ButtonLabel l = target.AddComponent<ButtonLabel>();
         l.text = text;
         l.color = color;
+        l.customFont = Resources.Load<Font>("Fonts/PixelatedPusab");
     }
 
     void Start()
@@ -53,8 +55,11 @@ public class ButtonLabel : MonoBehaviour
         tm.characterSize = characterSize;
         tm.color = color;
 
-        Font font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        if (customFont == null) customFont = Resources.Load<Font>("Fonts/PixelatedPusab");
+        Font font = customFont != null ? customFont : Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+
         tm.font = font;
+
         go.GetComponent<MeshRenderer>().material = font.material;
 
         tmRenderer = go.GetComponent<MeshRenderer>();
