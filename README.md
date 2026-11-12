@@ -37,18 +37,3 @@ There are three buttons on the ground, these buttons do the following:
 ### Winning and losing
 
 When the O button is pressed, if your potato has the same face pieces as the potato on the screen, confetti will appear, and the player will win. If the potato doesn't match, all the face pieces will be launched and your potato will now be empty, essentially counting as a loss.
-
-
-## Features
-
-### Image Tracking
-
-This game uses image tracking to change the player's projectiles to a type that is strong against the enemy that they want to defeat. The game detects the image, and according to the type it's assigned to, it spawns a particle and changes the projectile to that type.
-
-### Occlusion
-
-This game uses occlusion to shoot projectiles with physics. These projectiles have gravity and detect surfaces and enemies, making them defeat enemies if their type is strong against the enemy's type.
-
-### Plane Tracking
-
-This game uses plane tracking to spawn enemies to avoid spawning enemies in wrong places or have weird perspectives. This works by detecting the space that the camera shows in real time. It doesn't work perfectly, but the enemies spawn in places where the player would expect them to do.
